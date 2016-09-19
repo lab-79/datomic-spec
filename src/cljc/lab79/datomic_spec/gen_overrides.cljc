@@ -24,4 +24,4 @@
                                   (contains? spec-set k))))]
     (->> (merge datalog-clause-override
                 datomic-query-kv-where-override)
-         (into #{} spec-filter))))
+         (into {} spec-filter))))

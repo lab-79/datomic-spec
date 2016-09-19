@@ -7,7 +7,7 @@
 
 (stest/instrument (stest/enumerate-namespace 'lab79.datomic-spec.gen-overrides))
 (deftest stest-checks
-  (doseq [result-map (stest/check 'lab79.datomic-spec.gen)]
+  (doseq [result-map (stest/check)]
     (is (not (contains? result-map :failure)))))
 
 (deftest datalog-vars
