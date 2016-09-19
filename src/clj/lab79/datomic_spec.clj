@@ -68,7 +68,7 @@
   (s/with-gen
     (s/and symbol?
            #(clojure.string/starts-with? (name %) prefix))
-    #(->> (gen/not-empty (gen/string))
+    #(->> (gen/not-empty (gen/string-alphanumeric))
           (gen/fmap (fn [keyword-name] (symbol (str prefix keyword-name)))))))
 
 (s/def :datomic/query (s/or :map-query :datomic/map-query
