@@ -1,7 +1,14 @@
 (ns datomic-spec.core-test
   (:require [clojure.test :refer :all]
             [lab79.datomic-spec :refer :all]
-            [clojure.spec :as s]))
+            lab79.datomic-spec.gen-overrides
+            [clojure.spec :as s]
+            [clojure.spec.test :as stest]))
+
+(stest/instrument (stest/enumerate-namespace 'lab79.datomic-spec.gen-overrides))
+(deftest stest-checks
+  (doseq [result-map (stest/check 'lab79.datomic-spec.gen)]
+    (is (not (contains? result-map :failure)))))
 
 (deftest datalog-vars
   (testing "src vars"
