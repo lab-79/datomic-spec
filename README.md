@@ -2,7 +2,7 @@
 clojure.spec for Datomic
 
 [![Build Status](https://travis-ci.org/lab-79/datomic-spec.svg?branch=master)](https://travis-ci.org/lab-79/datomic-spec)
-[![Clojars Project](https://img.shields.io/clojars/v/lab79.datomic-spec.svg)](https://clojars.org/lab79.datomic-spec)
+[![Clojars Project](https://img.shields.io/clojars/v/lab79/datomic-spec.svg)](https://clojars.org/lab79/datomic-spec)
 [![codecov](https://codecov.io/gh/lab-79/datomic-spec/branch/master/graph/badge.svg)](https://codecov.io/gh/lab-79/datomic-spec)
 
 ## Summary
@@ -15,7 +15,7 @@ functions yet.
 
 Add the following dependency to your `project.clj` file:
 
-[![Clojars Project](https://clojars.org/lab79.datomic-spec/latest-version.svg)](https://clojars.org/lab79.datomic-spec)
+[![Clojars Project](https://clojars.org/lab79/datomic-spec/latest-version.svg)](https://clojars.org/lab79/datomic-spec)
 
 
 ## License
