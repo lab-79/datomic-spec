@@ -3,7 +3,8 @@
   (:require [clojure.spec :as s]
             [clojure.test.check.generators :as tcgen]
             [clojure.string :refer [starts-with?]]
-            [clojure.spec.gen :as gen]))
+            #?(:clj  [clojure.spec.gen :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])))
 
 (def datomic-value-types
   #{:db.type/string :db.type/boolean :db.type/long :db.type/bigint :db.type/float :db.type/double :db.type/bigdec
@@ -53,11 +54,11 @@
                                      :bool boolean?
                                      :num number?
                                      :int integer?
-                                     :float float?
+                                     :float #?(:clj float? :cljs number?)
                                      :inst inst?
                                      :uuid uuid?
-                                     :uri uri?
-                                     :bytes bytes?))
+                                     :uri #?(:clj uri? :cljs string?) ; TODO Get more precise than string?
+                                     :bytes #?(:clj bytes? :cljs string?))) ; TODO Get more precise than string?
 
 ;
 ; Datalog
