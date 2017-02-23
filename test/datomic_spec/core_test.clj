@@ -1,6 +1,7 @@
 (ns datomic-spec.core-test
   (:require [clojure.test :refer :all]
             [lab79.datomic-spec :refer :all]
+            [lab79.datomic-spec.pull :refer [spec->pull-pattern-spec]]
             lab79.datomic-spec.gen-overrides
             [clojure.spec :as s]
             [clojure.spec.test :as stest]))
@@ -120,3 +121,39 @@
                 :datomic/query
                 '[:find ?e ?x 
                   :where [?e :age 42] [?e :likes ?x]])))))
+
+(deftest generating-pull-specs
+  (testing "Basic map with scalars"
+    (s/def :test-pull/flat-map (s/keys :req [:flat-map/str] :opt [:flat-map/int]))
+    (s/def :flat-map/str string?)
+    (s/def :flat-map/int integer?)
+    (let [pull-spec (spec->pull-pattern-spec :test-pull/flat-map)]
+      (is (false? (s/valid? pull-spec [])))
+      (is (s/valid? pull-spec [:flat-map/str :flat-map/int])))
+    (testing "Map with nested maps"
+      (s/def :test-pull/map-with-nested-map (s/keys :req [:test-pull/flat-map :flat-map/str] :opt [:flat-map/int]))
+      (let [pull-spec (spec->pull-pattern-spec :test-pull/map-with-nested-map)]
+        (is (false? (s/valid? pull-spec [])))
+        (is (false? (s/valid? pull-spec [:test-pull/flat-map])))
+        (is (s/valid? pull-spec [{:test-pull/flat-map [:flat-map/str]}]))
+        (is (s/valid? pull-spec [{:test-pull/flat-map [:flat-map/str :flat-map/str]}]))
+        (is (s/valid? pull-spec [{:test-pull/flat-map [:flat-map/str :flat-map/str]} :flat-map/str :flat-map/int]))
+        (is (s/valid? pull-spec [:flat-map/str :flat-map/int]))))
+    (testing "Map with nested collection of maps"
+      (s/def :test-pull/map-with-nested-map-coll (s/keys :req [:map-with-nested-map-coll/map-coll]))
+      (s/def :map-with-nested-map-coll/map-coll (s/coll-of :test-pull/flat-map))
+      (let [pull-spec (spec->pull-pattern-spec :test-pull/map-with-nested-map-coll)]
+        (is (false? (s/valid? pull-spec [])))
+        (is (false? (s/valid? pull-spec [:map-with-nested-map-coll/map-coll])))
+        (is (s/valid? pull-spec [{:map-with-nested-map-coll/map-coll [:flat-map/str :flat-map/int]}])))
+
+      (testing "Deeply nested map"
+        (s/def :test-pull/deep-map (s/keys :req [:deep-map/map]))
+        (s/def :deep-map/map :test-pull/map-with-nested-map-coll)
+        (let [pull-spec (spec->pull-pattern-spec :test-pull/deep-map)]
+          (is (false? (s/valid? pull-spec [:deep-map/map])))
+          (is (false? (s/valid? pull-spec [{:deep-map/map [:map-with-nested-map-coll/map-coll]}])))
+          (is (false? (s/valid? pull-spec [{:deep-map/map [{:map-with-nested-map-coll/map-coll [:test-pull/flat-map]}]}])))
+          (is (s/valid? pull-spec[{:deep-map/map
+                                   [{:map-with-nested-map-coll/map-coll
+                                     [:flat-map/str :flat-map/int]}]}])))))))
