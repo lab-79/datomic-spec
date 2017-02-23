@@ -18,6 +18,13 @@
 ; Special Datomic attributes
 ;
 
+(s/def :db/id
+  (s/or
+    :lookup-ref (s/tuple keyword? (s/or :string string?
+                                        :int integer?
+                                        :uuid uuid?))
+    :string (s/and string? #(not (starts-with? % ":")))
+    :ident keyword?))
 (s/def :db/ident (s/with-gen keyword? #(tcgen/resize 2 (gen/keyword-ns))))
 (s/def :db/valueType datomic-value-types)
 (s/def :db/cardinality #{:db.cardinality/one :db.cardinality/many})
