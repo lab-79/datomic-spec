@@ -173,11 +173,11 @@
                                      :clauses (s/+ :datalog/clause)))
 
 (s/def :datalog/clause
-  (s/spec (s/alt :not-clause :datalog/not-clause
-                             :not-join-clause :datalog/not-join-clause
-                             :or-clause :datalog/or-clause
-                             :or-join-clause :datalog/or-join-clause
-                             :expression-clause :datalog/expression-clause)))
+  (s/or :not-clause :datalog/not-clause
+        :not-join-clause :datalog/not-join-clause
+        :or-clause :datalog/or-clause
+        :or-join-clause :datalog/or-join-clause
+        :expression-clause :datalog/expression-clause))
 
 (s/def :datalog/or-clause (s/cat :or-sym #{'or}
                                  :clauses (s/+ (s/alt :clause :datalog/clause
