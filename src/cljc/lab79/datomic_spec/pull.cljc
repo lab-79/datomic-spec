@@ -6,7 +6,7 @@
 (s/fdef keys->pull-pattern-spec-form
         :args (s/cat :all-keys (s/coll-of keyword? :min-count 1))
         :ret seq?)
-(defn- keys->pull-pattern-spec-form
+(defn keys->pull-pattern-spec-form
   "Returns the quoted clojure.spec that defines the shape of Datomic pulls that pull back data that will conform
   to `(s/keys :opt ~all-keys)"
   [all-keys]
@@ -28,6 +28,7 @@
                                ~(set map-keys)
                                (s/or ~@(->> map-keys
                                             (mapcat (fn [key]
+                                                      ; TODO Handle a key that is a s/or spec
                                                       (let [pull (->> (extract-spec-keys key)
                                                                       ((juxt :req :opt))
                                                                       (apply concat)
