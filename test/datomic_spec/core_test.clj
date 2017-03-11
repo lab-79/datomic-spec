@@ -185,4 +185,4 @@
                                    [{:map-with-nested-map-coll/map-coll
                                      [:flat-map/str :flat-map/int]}]}]))
           (testing "generation"
-            (is (s/valid? pull-spec (gen/generate (s/gen pull-spec))))))))))
+            (is (nil? (s/explain-data pull-spec (gen/generate (s/gen pull-spec)))))))))))
