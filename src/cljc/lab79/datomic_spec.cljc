@@ -4,7 +4,8 @@
             [clojure.test.check.generators :as tcgen]
             [clojure.string :refer [starts-with?]]
             #?(:clj  [clojure.spec.gen :as gen]
-               :cljs [cljs.spec.impl.gen :as gen])))
+               :cljs [cljs.spec.impl.gen :as gen]))
+  #?(:clj (:import (datomic.db Db))))
 
 (def datomic-value-types
   #{:db.type/string :db.type/boolean :db.type/long :db.type/bigint :db.type/float :db.type/double :db.type/bigdec
@@ -18,6 +19,7 @@
 ; Special Datomic attributes
 ;
 
+#?(:clj (s/def ::db #(instance? Db %)))
 (s/def :db/id
   (s/or
     :lookup-ref (s/tuple keyword? (s/or :string string?
