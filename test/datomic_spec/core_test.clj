@@ -1,17 +1,34 @@
 (ns datomic-spec.core-test
   (:require [clojure.test :refer :all]
+            [datomic.api :as d]
             [lab79.datomic-spec :refer :all]
             [lab79.datomic-spec.pull :refer [spec->pull-pattern-spec]]
             lab79.datomic-spec.gen-overrides
             [clojure.spec :as s]
             [clojure.spec.gen :as gen]
-            [clojure.spec.test :as stest]))
+            [clojure.spec.test :as stest]
+            ;; prevent `cannot be cast to clojure.lang.MultiFn` errors by
+            ;; explicitly loading test.check
+            [clojure.test.check :as tc]))
 
 (stest/instrument (stest/enumerate-namespace 'lab79.datomic-spec.gen-overrides))
 (stest/instrument (stest/enumerate-namespace 'lab79.datomic-spec.pull))
 (deftest stest-check
   (doseq [result-map (stest/check (stest/enumerate-namespace 'lab79.datomic-spec.gen-overrides))]
     (is (not (contains? result-map :failure)))))
+
+(def db-uri "datomic:mem://tests")
+
+(defn with-conn [f]
+  (d/create-database db-uri)
+  (f (d/connect db-uri))
+  (d/delete-database db-uri))
+
+(deftest datomic-db-test
+  (testing "::db spec"
+    (with-conn
+      (fn [conn] (is (s/valid? :lab79.datomic-spec/db (d/db conn)))))
+    (is (not (s/valid? :lab79.datomic-spec/db :foo)))))
 
 (deftest datalog-vars
   (testing "src vars"
