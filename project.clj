@@ -6,9 +6,9 @@
   :source-paths ["src/cljc"]
   :test-paths ["test"]
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
-                 [org.clojure/clojurescript "1.9.473"]
+                 [org.clojure/clojurescript "1.9.494"]
                  [org.clojure/test.check "0.9.0"]
-                 [lab79/clojure-spec-helpers "0.1.0-alpha4"]]
+                 [lab79/clojure-spec-helpers "0.1.0-alpha6"]]
   :profiles {:dev {:dependencies [[com.datomic/datomic-free "0.9.5561"]
                                   [org.clojure/tools.namespace "0.3.0-alpha3"]]}}
 
