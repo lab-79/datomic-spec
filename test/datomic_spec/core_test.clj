@@ -32,13 +32,23 @@
 
 (deftest db-id-test
   (testing "::tempid"
-    (is (s/valid? :lab79.datomic-spec/tempid #db/id[:db.part/user])))
+    (is (= (first (s/conform :lab79.datomic-spec/tempid #db/id[:db.part/user]))
+           :dbid)
+        "DbId tempid")
+    (is (= (first (s/conform :lab79.datomic-spec/tempid "tempid")) :string)
+        "String tempid"))
+
   (testing ":db/id"
-    (is (s/valid? :db/id [:user "foo"]) "Lookup ref")
-    (is (s/valid? :db/id "tempid") "tempid string")
-    (is (s/valid? :db/id #db/id[:db.part/user]) "tempid DbId")
+
+    (is (= (first (s/conform :db/id 123123123)) :entity-id))
+
+    (is (= (first (s/conform :db/id [:user "foo"])) :lookup-ref))
+
+    (is (= (first (s/conform :db/id "tempid")) :tempid))
+    (is (= (first (s/conform :db/id #db/id[:db.part/user])) :tempid))
     (is (not (s/valid? :db/id ":tempid")) "bad tempid")
-    (is (s/valid? :db/id :my/ident) "Ident")))
+
+    (is (= (first (s/conform :db/id :my/ident)) :ident))))
 
 (deftest datalog-vars
   (testing "src vars"

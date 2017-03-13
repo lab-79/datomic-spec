@@ -27,6 +27,7 @@
     :string (s/and string? #(not (starts-with? % ":")))))
 (s/def :db/id
   (s/or
+    :entity-id number?
     :lookup-ref (s/tuple keyword? (s/or :string string?
                                         :int integer?
                                         :uuid uuid?))
