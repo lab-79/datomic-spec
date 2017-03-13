@@ -30,6 +30,16 @@
       (fn [conn] (is (s/valid? :lab79.datomic-spec/db (d/db conn)))))
     (is (not (s/valid? :lab79.datomic-spec/db :foo)))))
 
+(deftest db-id-test
+  (testing "::tempid"
+    (is (s/valid? :lab79.datomic-spec/tempid #db/id[:db.part/user])))
+  (testing ":db/id"
+    (is (s/valid? :db/id [:user "foo"]) "Lookup ref")
+    (is (s/valid? :db/id "tempid") "tempid string")
+    (is (s/valid? :db/id #db/id[:db.part/user]) "tempid DbId")
+    (is (not (s/valid? :db/id ":tempid")) "bad tempid")
+    (is (s/valid? :db/id :my/ident) "Ident")))
+
 (deftest datalog-vars
   (testing "src vars"
     (is (s/valid? :datalog/src-var '$))

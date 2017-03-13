@@ -5,7 +5,7 @@
             [clojure.string :refer [starts-with?]]
             #?(:clj  [clojure.spec.gen :as gen]
                :cljs [cljs.spec.impl.gen :as gen]))
-  #?(:clj (:import (datomic.db Db))))
+  #?(:clj (:import (datomic.db Db DbId))))
 
 (def datomic-value-types
   #{:db.type/string :db.type/boolean :db.type/long :db.type/bigint :db.type/float :db.type/double :db.type/bigdec
@@ -20,12 +20,17 @@
 ;
 
 #?(:clj (s/def ::db #(instance? Db %)))
+
+(s/def ::tempid
+  (s/or
+    #?@(:clj [:dbid #(instance? DbId %)])
+    :string (s/and string? #(not (starts-with? % ":")))))
 (s/def :db/id
   (s/or
     :lookup-ref (s/tuple keyword? (s/or :string string?
                                         :int integer?
                                         :uuid uuid?))
-    :string (s/and string? #(not (starts-with? % ":")))
+    :tempid ::tempid
     :ident keyword?))
 (s/def :db/ident (s/with-gen keyword? #(tcgen/resize 2 (gen/keyword-ns))))
 (s/def :db/valueType datomic-value-types)
