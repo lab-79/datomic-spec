@@ -29,7 +29,8 @@
   (s/or
     :entity-id number?
     :lookup-ref (s/tuple keyword? (s/or :string string?
-                                        :int integer?
+                                        :keyword keyword?
+                                        :num number?
                                         :uuid uuid?))
     :tempid ::tempid
     :ident keyword?))
