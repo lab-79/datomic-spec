@@ -47,8 +47,9 @@
 (s/def :db.install/_attribute #{:db.part/db})
 
 (s/def :datomic/field-schema
-  (s/keys :req [:db/ident :db/valueType :db/cardinality :db/id :db.install/_attribute]
-          :opt [:db/doc :db/unique :db/index :db/isComponent :db/noHistory :db/fulltext]))
+  (s/keys :req [:db/ident :db/valueType :db/cardinality]
+          :opt [:db/id :db.install/_attribute :db/doc :db/unique :db/index
+                :db/isComponent :db/noHistory :db/fulltext]))
 
 ;
 ; Partitions
