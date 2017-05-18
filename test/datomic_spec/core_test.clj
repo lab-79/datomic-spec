@@ -40,11 +40,11 @@
         "Anything other than a map should fail")))
 
 (deftest db-id-test
-  (testing "::tempid"
-    (is (= (first (s/conform :lab79.datomic-spec/tempid #db/id[:db.part/user]))
+  (testing ":db.id/tempid"
+    (is (= (first (s/conform :db.id/tempid #db/id[:db.part/user]))
            :dbid)
         "DbId tempid")
-    (is (= (first (s/conform :lab79.datomic-spec/tempid "tempid")) :string)
+    (is (= (first (s/conform :db.id/tempid "tempid")) :string)
         "String tempid"))
 
   (testing ":db/id"
