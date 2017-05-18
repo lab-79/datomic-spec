@@ -21,6 +21,10 @@
 
 #?(:clj (s/def ::db #(instance? Db %)))
 
+;; The map may include a :db/id key identifying the entity data that the map refers to
+;; http://docs.datomic.com/transactions.html#sec-1-2
+(s/def ::entity (s/keys :opt [:db/id]))
+
 (s/def ::tempid
   (s/or
     #?@(:clj [:dbid #(instance? DbId %)])

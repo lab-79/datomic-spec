@@ -30,6 +30,15 @@
       (fn [conn] (is (s/valid? :lab79.datomic-spec/db (d/db conn)))))
     (is (not (s/valid? :lab79.datomic-spec/db :foo)))))
 
+(deftest entity-spec-test
+  (testing "::entity spec"
+    (is (s/valid? :lab79.datomic-spec/entity {:foo/bar 1}))
+    (is (s/valid? :lab79.datomic-spec/entity {:db/id "tempid"}))
+    (is (not (s/valid? :lab79.datomic-spec/entity {:db/id false}))
+        "An invalid :db/id should fail")
+    (is (not (s/valid? :lab79.datomic-spec/entity "not a map"))
+        "Anything other than a map should fail")))
+
 (deftest db-id-test
   (testing "::tempid"
     (is (= (first (s/conform :lab79.datomic-spec/tempid #db/id[:db.part/user]))
