@@ -7,7 +7,7 @@
   (s/or :symbol symbol?
         :keyword keyword?
         :nested (s/map-of keyword? :datomic.pull/pattern)
-        :vector (s/and vector? (s/coll-of :datomic.pull/pattern))))
+        :coll (s/coll-of :datomic.pull/pattern)))
 
 (s/fdef keys->pull-pattern-spec-form
         :args (s/cat :all-keys (s/coll-of keyword? :min-count 1))
