@@ -170,6 +170,38 @@
                 '[:find ?e ?x 
                   :where [?e :age 42] [?e :likes ?x]])))))
 
+(deftest datomic-pull-pattern-spec
+  (testing "on single vectors"
+    (is (false? (s/valid? :datomic.pull/pattern :test)))
+    (is (false? (s/valid? :datomic.pull/pattern [])))
+    (is (s/valid? :datomic.pull/pattern ['*]))
+    (is (s/valid? :datomic.pull/pattern [:entity/uuid :db/id])))
+
+
+  (testing "nested maps"
+    (is (s/valid? :datomic.pull/pattern
+                  [:entity/uuid :db/id
+                   {:person/name [:person.name/family
+                                  :person.name/given]}])))
+
+  (testing "deep nested maps"
+    (is (false?
+          (s/valid? :datomic.pull/pattern
+                    [:entity/uuid :db/id 6
+                     {:person/name [:person.name/family
+                                    :person.name/given]}
+                     {:nested/test [:nested.attr/test1
+                                    {:nested.attr/test2
+                                     [:nested-attr.test2/test1 :nested-attr.test2/test2]}]}])))
+    (is (s/valid? :datomic.pull/pattern
+                  [:entity/uuid :db/id
+                   {:recur-depth/test 6}
+                   {:person/name [:person.name/family
+                                  :person.name/given]}
+                   {:nested/test [:nested.attr/test1
+                                  {:nested.attr/test2
+                                   [:nested-attr.test2/test1 :nested-attr.test2/test2]}]}]))))
+
 (deftest generating-pull-specs
   (testing "Basic map with scalars"
     (s/def :test-pull/flat-map (s/keys :req [:flat-map/str] :opt [:flat-map/int]))

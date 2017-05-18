@@ -28,15 +28,12 @@
 (s/def :db/id
   (s/or
     :entity-id number?
-    :lookup-ref (s/tuple keyword? (s/or :string string?
-                                        :keyword keyword?
-                                        :num number?
-                                        :uuid uuid?))
+    :lookup-ref :datomic-spec/lookup-ref
     :tempid :db.id/tempid
     :ident :db.id/ident))
 
 (s/def :db.id/long number?)
-(s/def :db.id/lookup-ref
+(s/def :datomic-spec/lookup-ref
   (s/tuple keyword?
            (s/or :string string?
                  :keyword keyword?

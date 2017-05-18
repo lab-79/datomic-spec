@@ -4,10 +4,14 @@
             [lab79.clojure-spec-helpers :as csh :refer [extract-spec-keys spec->spec-keys]]))
 
 (s/def :datomic.pull/pattern
-  (s/or :symbol symbol?
-        :keyword keyword?
-        :nested (s/map-of keyword? :datomic.pull/pattern)
-        :coll (s/coll-of :datomic.pull/pattern)))
+  (s/or :nested (s/map-of keyword?
+                          (s/or :nested-pattern :datomic.pull/pattern
+                                :depth-indicator number?))
+        :coll (s/coll-of (s/or :scalar (s/or :string string?
+                                             :symbol symbol?
+                                             :keyword keyword?)
+                               :nested :datomic.pull/pattern)
+                         :min-count 1)))
 
 (s/fdef keys->pull-pattern-spec-form
         :args (s/cat :all-keys (s/coll-of keyword? :min-count 1))
