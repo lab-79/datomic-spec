@@ -172,28 +172,28 @@
 
 (deftest datomic-pull-pattern-spec
   (testing "on single vectors"
-    (is (false? (s/valid? :datomic.pull/pattern :test)))
-    (is (false? (s/valid? :datomic.pull/pattern [])))
-    (is (s/valid? :datomic.pull/pattern ['*]))
-    (is (s/valid? :datomic.pull/pattern [:entity/uuid :db/id])))
+    (is (false? (s/valid? :lab79.datomic-spec/pull-pattern :test)))
+    (is (false? (s/valid? :lab79.datomic-spec/pull-pattern [])))
+    (is (s/valid? :lab79.datomic-spec/pull-pattern ['*]))
+    (is (s/valid? :lab79.datomic-spec/pull-pattern [:entity/uuid :db/id])))
 
 
   (testing "nested maps"
-    (is (s/valid? :datomic.pull/pattern
+    (is (s/valid? :lab79.datomic-spec/pull-pattern
                   [:entity/uuid :db/id
                    {:person/name [:person.name/family
                                   :person.name/given]}])))
 
   (testing "deep nested maps"
     (is (false?
-          (s/valid? :datomic.pull/pattern
+          (s/valid? :lab79.datomic-spec/pull-pattern
                     [:entity/uuid :db/id 6
                      {:person/name [:person.name/family
                                     :person.name/given]}
                      {:nested/test [:nested.attr/test1
                                     {:nested.attr/test2
                                      [:nested-attr.test2/test1 :nested-attr.test2/test2]}]}])))
-    (is (s/valid? :datomic.pull/pattern
+    (is (s/valid? :lab79.datomic-spec/pull-pattern
                   [:entity/uuid :db/id
                    {:recur-depth/test 6}
                    {:person/name [:person.name/family
