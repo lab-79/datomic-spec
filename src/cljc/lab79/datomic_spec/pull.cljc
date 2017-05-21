@@ -3,9 +3,19 @@
             [clojure.spec.gen :as gen]
             [lab79.clojure-spec-helpers :as csh :refer [extract-spec-keys spec->spec-keys]]))
 
+(s/def :lab79.datomic-spec/pull-pattern
+  (s/or :nested (s/map-of keyword?
+                          (s/or :nested-pattern :lab79.datomic-spec/pull-pattern
+                                :depth-indicator number?))
+        :coll (s/coll-of (s/or :scalar (s/or :string string?
+                                             :symbol symbol?
+                                             :keyword keyword?)
+                               :nested :lab79.datomic-spec/pull-pattern)
+                         :min-count 1)))
+
 (s/fdef keys->pull-pattern-spec-form
         :args (s/cat :all-keys (s/coll-of keyword? :min-count 1))
-        :ret seq?)
+        :ret :lab79.datomic-spec/pull-pattern)
 (defn keys->pull-pattern-spec-form
   "Returns the quoted clojure.spec that defines the shape of Datomic pulls that pull back data that will conform
   to `(s/keys :opt ~all-keys)"

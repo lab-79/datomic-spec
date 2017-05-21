@@ -25,19 +25,26 @@
 ;; http://docs.datomic.com/transactions.html#sec-1-2
 (s/def ::entity (s/keys :opt [:db/id]))
 
-(s/def ::tempid
-  (s/or
-    #?@(:clj [:dbid #(instance? DbId %)])
-    :string (s/and string? #(not (starts-with? % ":")))))
 (s/def :db/id
   (s/or
     :entity-id number?
-    :lookup-ref (s/tuple keyword? (s/or :string string?
-                                        :keyword keyword?
-                                        :num number?
-                                        :uuid uuid?))
-    :tempid ::tempid
-    :ident keyword?))
+    :lookup-ref ::lookup-ref
+    :tempid :db.id/tempid
+    :ident :db.id/ident))
+
+(s/def :db.id/long number?)
+(s/def ::lookup-ref
+  (s/tuple keyword?
+           (s/or :string string?
+                 :keyword keyword?
+                 :num number?
+                 :uuid uuid?)))
+(s/def :db.id/tempid
+  (s/or
+    #?@(:clj [:dbid #(instance? DbId %)])
+    :string (s/and string? #(not (starts-with? % ":")))))
+(s/def :db.id/ident keyword?)
+
 (s/def :db/ident (s/with-gen keyword? #(tcgen/resize 2 (gen/keyword-ns))))
 (s/def :db/valueType datomic-value-types)
 (s/def :db/cardinality #{:db.cardinality/one :db.cardinality/many})

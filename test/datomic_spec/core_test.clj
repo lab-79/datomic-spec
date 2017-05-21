@@ -40,11 +40,11 @@
         "Anything other than a map should fail")))
 
 (deftest db-id-test
-  (testing "::tempid"
-    (is (= (first (s/conform :lab79.datomic-spec/tempid #db/id[:db.part/user]))
+  (testing ":db.id/tempid"
+    (is (= (first (s/conform :db.id/tempid #db/id[:db.part/user]))
            :dbid)
         "DbId tempid")
-    (is (= (first (s/conform :lab79.datomic-spec/tempid "tempid")) :string)
+    (is (= (first (s/conform :db.id/tempid "tempid")) :string)
         "String tempid"))
 
   (testing ":db/id"
@@ -169,6 +169,38 @@
                 :datomic/query
                 '[:find ?e ?x 
                   :where [?e :age 42] [?e :likes ?x]])))))
+
+(deftest datomic-pull-pattern-spec
+  (testing "on single vectors"
+    (is (false? (s/valid? :lab79.datomic-spec/pull-pattern :test)))
+    (is (false? (s/valid? :lab79.datomic-spec/pull-pattern [])))
+    (is (s/valid? :lab79.datomic-spec/pull-pattern ['*]))
+    (is (s/valid? :lab79.datomic-spec/pull-pattern [:entity/uuid :db/id])))
+
+
+  (testing "nested maps"
+    (is (s/valid? :lab79.datomic-spec/pull-pattern
+                  [:entity/uuid :db/id
+                   {:person/name [:person.name/family
+                                  :person.name/given]}])))
+
+  (testing "deep nested maps"
+    (is (false?
+          (s/valid? :lab79.datomic-spec/pull-pattern
+                    [:entity/uuid :db/id 6
+                     {:person/name [:person.name/family
+                                    :person.name/given]}
+                     {:nested/test [:nested.attr/test1
+                                    {:nested.attr/test2
+                                     [:nested-attr.test2/test1 :nested-attr.test2/test2]}]}])))
+    (is (s/valid? :lab79.datomic-spec/pull-pattern
+                  [:entity/uuid :db/id
+                   {:recur-depth/test 6}
+                   {:person/name [:person.name/family
+                                  :person.name/given]}
+                   {:nested/test [:nested.attr/test1
+                                  {:nested.attr/test2
+                                   [:nested-attr.test2/test1 :nested-attr.test2/test2]}]}]))))
 
 (deftest generating-pull-specs
   (testing "Basic map with scalars"
