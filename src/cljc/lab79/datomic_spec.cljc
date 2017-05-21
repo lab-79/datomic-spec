@@ -43,6 +43,8 @@
   (s/or
     #?@(:clj [:dbid #(instance? DbId %)])
     :string (s/and string? #(not (starts-with? % ":")))))
+; TODO Deprecate ::tempid
+(s/def ::tempid :db.id/tempid)
 (s/def :db.id/ident keyword?)
 
 (s/def :db/ident (s/with-gen keyword? #(tcgen/resize 2 (gen/keyword-ns))))
