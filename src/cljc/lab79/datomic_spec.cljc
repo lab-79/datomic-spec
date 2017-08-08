@@ -3,8 +3,7 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.test.check.generators :as tcgen]
             [clojure.string :refer [starts-with?]]
-            #?(:clj  [clojure.spec.gen.alpha :as gen]
-               :cljs [cljs.spec.impl.gen :as gen]))
+            [clojure.spec.gen.alpha :as gen])
   #?(:clj (:import (datomic.db Db DbId))))
 
 (def datomic-value-types
