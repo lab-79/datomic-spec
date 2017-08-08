@@ -1,4 +1,4 @@
-(defproject lab79/datomic-spec "0.2.0-alpha12-SNAPSHOT"
+(defproject lab79/datomic-spec "1.0.0"
   :description "clojure.spec for Datomic"
   :url "https://github.com/lab-79/datomic-spec"
   :license {:name "Eclipse Public License"
