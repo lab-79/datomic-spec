@@ -4,9 +4,9 @@
             [lab79.datomic-spec :refer :all]
             [lab79.datomic-spec.pull :refer [spec->pull-pattern-spec]]
             lab79.datomic-spec.gen-overrides
-            [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
-            [clojure.spec.test :as stest]
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
+            [clojure.spec.test.alpha :as stest]
             ;; prevent `cannot be cast to clojure.lang.MultiFn` errors by
             ;; explicitly loading test.check
             [clojure.test.check :as tc]))

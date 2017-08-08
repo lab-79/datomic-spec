@@ -1,5 +1,5 @@
 (ns lab79.datomic-spec.gen-overrides
-  (:require [clojure.spec :as s]
+  (:require [clojure.spec.alpha :as s]
             [clojure.test.check.generators :as tcgen :refer [generator?]]))
 
 

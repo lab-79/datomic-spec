@@ -1,9 +1,9 @@
 (ns lab79.datomic-spec
-  "clojure.spec defintions for Datomic"
-  (:require [clojure.spec :as s]
+  "clojure.spec.alpha defintions for Datomic"
+  (:require [clojure.spec.alpha :as s]
             [clojure.test.check.generators :as tcgen]
             [clojure.string :refer [starts-with?]]
-            #?(:clj  [clojure.spec.gen :as gen]
+            #?(:clj  [clojure.spec.gen.alpha :as gen]
                :cljs [cljs.spec.impl.gen :as gen]))
   #?(:clj (:import (datomic.db Db DbId))))
 

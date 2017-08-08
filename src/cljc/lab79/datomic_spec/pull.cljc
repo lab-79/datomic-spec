@@ -1,6 +1,6 @@
 (ns lab79.datomic-spec.pull
-  (:require [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
             [lab79.clojure-spec-helpers :as csh :refer [extract-spec-keys spec->spec-keys]]))
 
 (s/def :lab79.datomic-spec/pull-pattern

@@ -5,12 +5,12 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :source-paths ["src/cljc"]
   :test-paths ["test"]
-  :dependencies [[org.clojure/clojure "1.9.0-alpha15"]
-                 [org.clojure/clojurescript "1.9.521"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha17"]
+                 [org.clojure/clojurescript "1.9.854"]
                  [org.clojure/test.check "0.9.0"]
-                 [lab79/clojure-spec-helpers "0.1.0-alpha11"]]
-  :profiles {:dev {:dependencies [[com.datomic/datomic-free "0.9.5561"]
-                                  [org.clojure/tools.namespace "0.3.0-alpha3"]]}}
+                 [lab79/clojure-spec-helpers "1.0.1"]]
+  :profiles {:dev {:dependencies [[com.datomic/datomic-free "0.9.5561.54"]
+                                  [org.clojure/tools.namespace "0.3.0-alpha4"]]}}
 
   ; https://github.com/technomancy/leiningen/issues/2173
   :monkeypatch-clojure-test false
