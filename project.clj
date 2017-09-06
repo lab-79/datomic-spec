@@ -8,7 +8,7 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha19"]
                  [org.clojure/clojurescript "1.9.908"]
                  [org.clojure/test.check "0.9.0"]
-                 [lab79/clojure-spec-helpers "1.0.1"]]
+                 [lab79/clojure-spec-helpers "1.0.2"]]
   :profiles {:dev {:dependencies [[com.datomic/datomic-free "0.9.5561.54"]
                                   [org.clojure/tools.namespace "0.3.0-alpha4"]]}}
 
